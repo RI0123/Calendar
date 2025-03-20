@@ -1,30 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>PDFアップロード</title>
+    <title>PDF to Spreadsheet</title>
 </head>
+
 <body>
-    <form id="uploadForm">
+    <h1>PDF to Spreadsheet Converter</h1>
     <input type="file" id="pdfFile" accept=".pdf">
-    <button type="button" onclick="uploadPdf()">アップロード</button>
-    </form>
+    <button id="uploadButton">Upload</button>
 
     <script>
-    function uploadPdf() {
-        const file = document.getElementById('pdfFile').files[0];
-        if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const base64Pdf = e.target.result.split(',')[1];
-            google.script.run.withSuccessHandler(spreadsheetUpdated).processPdf(base64Pdf);
-        };
-        reader.readAsDataURL(file);
-        }
-    }
-
-    function spreadsheetUpdated(message) {
-        alert(message);
-    }
+        document.getElementById('uploadButton').addEventListener('click', function () {
+            const file = document.getElementById('pdfFile').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const base64Pdf = event.target.result.split(',')[1];
+                    const fileName = file.name;
+                    google.script.run.withSuccessHandler(spreadsheetId => {
+                        window.location.href = `preview.html?id=${spreadsheetId}`;
+                    }).processPdf(base64Pdf, fileName);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
     </script>
 </body>
+
 </html>

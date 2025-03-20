@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Spreadsheet Preview</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 80vh;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Spreadsheet Preview</h1>
+    <iframe id="spreadsheetFrame"></iframe>
+    <button id="matchButton">内容が一致</button>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const spreadsheetId = urlParams.get('id');
+        document.getElementById('spreadsheetFrame').src = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/edit?usp=sharing`;
+
+        document.getElementById('matchButton').addEventListener('click', function () {
+            // 内容が一致した場合の処理を実装
+            alert('内容が一致しました！'); // 例：確認メッセージを表示
+            // google.script.run.saveData(spreadsheetId); // 例：GASに関数を呼び出し、データを保存
+        });
+    </script>
+</body>
+
+</html>
