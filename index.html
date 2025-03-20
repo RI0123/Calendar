@@ -12,14 +12,29 @@
 </head>
 <body>
 <div>
-    <form action="test.html" method="post" enctype="multipart/form-data" >
+    <form action="test.html" method="post" enctype="application/pdf, image/*" >
     <div>
-        <input type="file" name="test">
+        <input type="file" name="test" required>
     </div>
     <div>
         <input type="submit" value="送信する">
     </div>
-</form>
+    </form>
+    <p>プレビュー</p>
+    <img id="preview">
+
+    <script>
+    function previewFile(hoge){
+    var fileData = new FileReader();
+    fileData.onload = (function() {
+      //id属性が付与されているimgタグのsrc属性に、fileReaderで取得した値の結果を入力することで
+      //プレビュー表示している
+        document.getElementById('preview').src = fileData.result;
+    });
+    fileData.readAsDataURL(hoge.files[0]);
+    }
+    </script>
+    </body>
 </div>
 </body>
 </html>
