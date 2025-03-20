@@ -1,25 +1,30 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>カレンダー</title>
-    <style>
-    div{
-        margin-bottom: 20px;
-    }
-    </style>
+    <title>PDFアップロード</title>
 </head>
 <body>
-<div>
-    <form action="tmp1.html" method="post" enctype="application/pdf, image/*" >
-    <div>
-        <input type="file" name="tmp1" required>
-    </div>
-    <div>
-        <input type="submit" value="送信する">
-    </div>
+    <form id="uploadForm">
+    <input type="file" id="pdfFile" accept=".pdf">
+    <button type="button" onclick="uploadPdf()">アップロード</button>
     </form>
-</div>
+
+    <script>
+    function uploadPdf() {
+        const file = document.getElementById('pdfFile').files[0];
+        if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Pdf = e.target.result.split(',')[1];
+            google.script.run.withSuccessHandler(spreadsheetUpdated).processPdf(base64Pdf);
+        };
+        reader.readAsDataURL(file);
+        }
+    }
+
+    function spreadsheetUpdated(message) {
+        alert(message);
+    }
+    </script>
 </body>
 </html>
